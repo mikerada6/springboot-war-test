@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringbootWarTestApplication<springboot-war-test>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.rezatron.springboot_war_test.SpringbootWarTestApplication",
+            "projectName": "springboot-war-test",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
