@@ -1,18 +1,54 @@
-<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <!-- Use the absolute path from application.properties -->
-    <file>${LOG_FILE_NAME:-/opt/tomcat/logs/springboot-war-test/springboot-war-test.log}</file>
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
 
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-        <!-- Rolled-over log files will be placed in the same directory -->
-        <fileNamePattern>${LOG_FILE_NAME:-/opt/tomcat/logs/springboot-war-test/springboot-war-test}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+    <!-- Console Appender for logging to the console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-        <maxHistory>30</maxHistory>
-        <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-            <maxFileSize>10MB</maxFileSize>
-        </timeBasedFileNamingAndTriggeringPolicy>
-    </rollingPolicy>
+    <!-- File Appender with Time-based Rolling Policy -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Hardcoded log file path -->
+        <file>/opt/tomcat/logs/springboot-war-test/springboot-war-test.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Rolled-over log files will be named with a date and index -->
+            <fileNamePattern>/opt/tomcat/logs/springboot-war-test/springboot-war-test.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- Keep 30 days worth of logs -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-    <encoder>
-        <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
-    </encoder>
-</appender>
+    <!-- Set logging levels for key dependencies -->
+    
+    <!-- Spring Boot Actuator: INFO by default, useful for health and monitoring -->
+    <logger name="org.springframework.boot.actuate" level="INFO" />
+    
+    <!-- Spring Boot Web: INFO for request handling, can change to DEBUG for troubleshooting -->
+    <logger name="org.springframework.web" level="INFO" />
+    
+    <!-- Spring Boot Devtools: DEBUG level during development for more detailed logs -->
+    <logger name="org.springframework.boot.devtools" level="DEBUG" />
+    
+    <!-- Tomcat: WARN level to reduce noise from container logs -->
+    <logger name="org.apache.catalina" level="WARN" />
+    
+    <!-- Spring Boot Test: WARN level during testing to minimize test log noise -->
+    <logger name="org.springframework.boot.test" level="WARN" />
+    
+    <!-- Spring Cloud Config: INFO for configuration logs, change to DEBUG if troubleshooting needed -->
+    <logger name="org.springframework.cloud.config" level="INFO" />
+    
+    <!-- Micrometer (for Prometheus metrics): INFO to capture metrics-related logs -->
+    <logger name="io.micrometer.prometheus" level="INFO" />
+
+    <!-- Root logger, applies to all logs -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
