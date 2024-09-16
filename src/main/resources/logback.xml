@@ -1,37 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- Console Appender for logging to the console -->
+    <!-- Console Appender for all profiles -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- File Appender with Time and Size-based Rolling Policy -->
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- Hardcoded log file path -->
-        <file>/opt/tomcat/logs/springboot-war-test/springboot-war-test.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- Time-based and size-based rolling with index -->
-            <fileNamePattern>/opt/tomcat/logs/springboot-war-test/springboot-war-test.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!-- Keep 30 days worth of logs -->
-            <maxHistory>30</maxHistory>
+    <!-- Common logging levels for all profiles -->
+    <!-- Set the logging level for Spring Boot dependencies -->
+    <logger name="org.springframework.boot" level="INFO" />
+    <logger name="org.springframework.web" level="INFO" />
+    <logger name="org.springframework.cloud" level="INFO" />
+    <logger name="org.springframework" level="INFO" />
 
-            <!-- Combine time and size-based rolling -->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <!-- Maximum file size before rolling over (e.g., 10MB) -->
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
+    <!-- Micrometer and Prometheus logging -->
+    <logger name="io.micrometer" level="INFO" />
+    <logger name="io.prometheus" level="INFO" />
 
-    <!-- Root logger, applies to all logs -->
-    <root level="INFO">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
-    </root>
+    <!-- Actuator specific logging -->
+    <logger name="org.springframework.boot.actuate" level="INFO" />
+
+    <!-- Lombok specific logging -->
+    <logger name="lombok" level="INFO" />
+
+    <!-- Default configuration for local dev environment -->
+    <springProfile name="default">
+        <appender name="FILE_DEV" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- Dev log file path -->
+            <file>/Users/mradas341/Desktop/logs/springboot-war-test.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>/Users/mradas341/Desktop/logs/springboot-war-test.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <!-- Root logger configuration for dev -->
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE_DEV" />
+        </root>
+    </springProfile>
+
+    <!-- Production configuration -->
+    <springProfile name="!default">
+        <appender name="FILE_PROD" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- Prod log file path -->
+            <file>/opt/tomcat/logs/springboot-war-test/springboot-war-test.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>/opt/tomcat/logs/springboot-war-test/springboot-war-test.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <!-- Root logger configuration for prod -->
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE_PROD" />
+        </root>
+    </springProfile>
+
 </configuration>

@@ -1,61 +1,54 @@
-# Java
-*.class
-*.jar
-*.war
-*.ear
+# Maven target directory
+/target/
 
-# Logs
+# Log files
 *.log
-logs/
-*.out
 
-# Spring Boot
-target/
-!src/main/resources/
-!src/test/resources/
-*.iml
-*.iws
+# IntelliJ IDEA related files
+/.idea/
+/*.iml
+/*.iws
 
-# Maven
-.mvn/
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
+# Eclipse related files
+/.classpath
+/.project
+/.settings/
 
-# Gradle
-.gradle/
-build/
-!gradle-wrapper.jar
-.gradle-cache/
-gradle-app.setting
-.gradle-build-config/
+# VS Code related files
+/.vscode/
 
-# IDEs and Tools
-### IntelliJ IDEA ###
-.idea/
-*.iws
-*.iml
-*.ipr
+# Temporary files
+*.tmp
+*.temp
+*.swp
 
-### Eclipse ###
-.project
-.classpath
-.settings/
-.springBeans
-
-### VS Code ###
-.vscode/
-
-# OS Files
+# MacOS system files
 .DS_Store
-Thumbs.db
 
-# User-Specific Files
-*.env
-# *.properties
-.env.local
-.env.*.local
-secrets/
+# Environment variable files (local development)
+/.env
+
+# Ignore application files containing sensitive information
+# Add sensitive profiles and configurations to the environment during deployment, not here
+/src/main/resources/application.yml
+/src/main/resources/application-dev.yml
+/src/main/resources/application-prod.yml
+
+# Ignore any configuration files with private settings
+/src/main/resources/bootstrap.yml
+/src/main/resources/bootstrap.properties
+
+# Ignore other potentially sensitive configuration files
+/secret.properties
+*.jks
+
+# Vault related files
+# If any Vault configuration files or tokens are stored locally, ignore them
+/vault-token
+/vault-config.yml
+
+# Ignore test output
+/test-output/
+
+# Ignore build output for WARs
+*.war
